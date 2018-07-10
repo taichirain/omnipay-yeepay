@@ -174,49 +174,7 @@ abstract class BaseAbstractRequest extends AbstractRequest
         $this->setParameter('callbackurl', $callBackUrl);
     }
 
-    /**
-      * @取得hmac签名
-      * @$dataArray 明文数组或者字符串
-      * @$key 密钥
-      * @return string
-      *
-     */
-    function getHmac(array $dataArray, $key) {
-        
-        if ( !isViaArray($dataArray) ) {
-        
-            return null;    
-        }
-        
-        if ( !$key || empty($key) ) {
-            
-            return null;
-        }
-        
-        if ( is_array($dataArray) ) {
-        
-            $data = implode("", $dataArray);
-        } else {
-        
-            $data = strval($dataArray); 
-        }
-        
-
-        $b = 64; // byte length for md5
-        if (strlen($key) > $b) {
-            
-            $key = pack("H*",md5($key));
-        }
-        
-        $key = str_pad($key, $b, chr(0x00));
-        $ipad = str_pad('', $b, chr(0x36));
-        $opad = str_pad('', $b, chr(0x5c));
-        $k_ipad = $key ^ $ipad ;
-        $k_opad = $key ^ $opad;
-
-        return md5($k_opad . pack("H*",md5($k_ipad . $data)));
-    }
-
+    
     /**
       * @取得aes加密
       * @$dataArray 明文字符串

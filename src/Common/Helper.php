@@ -1,10 +1,10 @@
 <?php
 
-namespace Omnipay\YeePay\Common;
+namespace Omnipay\YeePay;
 
 use Omnipay\YeePay\Common\CryptAES;
 
-class Signer 
+class Helper
 {
     /**
       *
@@ -88,10 +88,6 @@ class Signer
          */
         function getAes($data, $aesKey) {
 
-            foreach ($data as &$v) {
-                $v = $v ? $v : '';
-            }
-
             $aes = new CryptAES();
             $aes->set_key($aesKey);
             $aes->require_pkcs5();
@@ -109,10 +105,6 @@ class Signer
           *
          */
         function getDeAes($data, $aesKey) {
-
-            foreach ($data as &$v) {
-                $v = $v ? $v : '';
-            }
 
             $aes = new CryptAES();
             $aes->set_key($aesKey);

@@ -14,7 +14,7 @@ use Omnipay\Common\Exception\InvalidRequestException;
  */
 abstract class CreateOrderRequest extends BaseAbstractRequest
 {
-
+    protected $method = '';
     protected $endpoint = 'https://o2o.yeepay.com/zgt-api/api/pay';
 
     public function getData()
@@ -32,8 +32,9 @@ abstract class CreateOrderRequest extends BaseAbstractRequest
         }
 
         //needRequestHmac
-        $data = [
-            'requestid'      => $this->getRequestId(), 
+        $hmacdata = [
+            'customernumber' => $this->getCustomerNumber(),
+            'requestid'      => $this->getRequestId(),
             'amount'         => $this->getAmount(), 
             'assure'         => $this->getAssure(), 
             'productname'    => $this->getProductName(), 
@@ -47,8 +48,7 @@ abstract class CreateOrderRequest extends BaseAbstractRequest
             'memo'           => $this->getMemo() 
         ];
 
-        $data = $this->parameters->all();
-        $data['sign'] = $this->sign($data, $this->getSignType());
+        // $data = $this->parameters->all();
 
         $extra_data = [
             'payproducttype' => $this->getPayproducttype(), 
@@ -60,7 +60,21 @@ abstract class CreateOrderRequest extends BaseAbstractRequest
             'mobilephone'    => $this->getMobilePhone(),
             'orderexpdate'   => $this->getOrderExpdate(), 
         ];
-        return $data;
+
+        $data = array_merge($hmacdata, $extra_data);
+
+        $data['hmac'] = Signer::signHmac($hmacdata, $this->getKeyValue());
+
+        $json = Signer::cn_json_encode($data);
+
+        $aesStr = Signer::signAes($json, $this->getKeyAesValue());
+
+        $requestData = [
+            'customernumber' => $this->getCustomerNumber(),
+            'data' => $aesStr
+        ];
+
+        return $requestData;
     }
 
     protected function validateParams()
@@ -173,42 +187,42 @@ abstract class CreateOrderRequest extends BaseAbstractRequest
 
     public function getCardName() 
     {
-        return $this->getParameter('card_name');
+        return $this->getParameter('cardname');
     }
 
     public function setCardName($cardName) 
     {
-        $this->setParameter('card_name', $cardName);
+        $this->setParameter('cardname', $cardName);
     }
 
     public function getBankCardNum() 
     {
-        return $this->getParameter('ip');
+        return $this->getParameter('bankcardnum');
     }
 
     public function setBankCardNum($bankCardNum) 
     {
-        $this->setParameter('bank_card_num', $bankCardNum);
+        $this->setParameter('bankcardnum', $bankCardNum);
     }
 
     public function getMobilePhone() 
     {
-        return $this->getParameter('ip');
+        return $this->getParameter('mobilephone');
     }
 
     public function setMobilePhone($mobilePhone) 
     {
-        $this->setParameter('mobile_phone', $mobilePhone);
+        $this->setParameter('mobilephone', $mobilePhone);
     }
 
     public function getOrderExpdate() 
     {
-        return $this->getParameter('order_expdate');
+        return $this->getParameter('orderexpdate');
     }
 
     public function setOrderExpdate($orderExpdate) 
     {
-        $this->setParameter('order_expdate', $orderExpdate);
+        $this->setParameter('orderexpdate', $orderExpdate);
     }
 
     /**
