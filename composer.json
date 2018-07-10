@@ -25,7 +25,7 @@
     }
   },
   "require": {
-    "omnipay/common": "^3.0",
+    "omnipay/common": "^3.0.2",
     "php-http/guzzle6-adapter": "*"
   },
   "require-dev": {
