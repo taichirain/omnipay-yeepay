@@ -26,7 +26,6 @@ class CreateOrderResponse extends AbstractResponse implements RedirectResponseIn
         return $this->request->getEndpoint() . 'unifiedorder/?' . http_build_query($this->getRedirectData());
     }
 
-
     /**
      * Gets the redirect form data array, if the redirect method is POST.
      */
@@ -34,7 +33,6 @@ class CreateOrderResponse extends AbstractResponse implements RedirectResponseIn
     {
         return $this->data;
     }
-
 
     /**
      * Get the required redirect method (either GET or POST).

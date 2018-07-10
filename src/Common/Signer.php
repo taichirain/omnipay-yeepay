@@ -12,7 +12,6 @@ class CryptAES
     protected $secret_key = '';
     protected $iv         = '';
  
- 
     public function set_cipher($cipher)
     {
         $this->cipher = $cipher; 

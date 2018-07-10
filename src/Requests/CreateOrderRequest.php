@@ -7,7 +7,6 @@ use Omnipay\Yeepay\Responses\CreateOrderResponse;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Message\ResponseInterface;
 
 /**
  * 统一下单
@@ -72,83 +71,162 @@ abstract class CreateOrderRequest extends BaseAbstractRequest
         );
     }
 
+    public function getAmount() 
+    {
+        return $this->getParameter('amount');
+    }
+
+    public function setAmount() 
+    {
+        $this->setParameter('amount', $amount);
+    }
+
+    public function getAssure() 
+    {
+        return $this->getParameter('assure');
+    }
+
+    public function setAssure() 
+    {
+        $this->setParameter('assure', $assure);
+    }
+
+    public function getProductCat()
+    {
+        $this->setParameter('ip', $ip);
+    }
+
+    public function setProductCat() 
+    {
+        $this->setParameter('productcat', $productcat);
+    }
+
+    public function getProductDesc() 
+    {
+        return $this->getParameter('productdesc');
+    }
+
+    public function setProductDesc() 
+    {
+        $this->setParameter('productdesc', $productdesc);
+    }
+
+    public function getDivideInfo() 
+    {
+        return $this->getParameter('divideinfo');
+    }
+
+    public function setDivideInfo() 
+    {
+        $this->setParameter('ip', $ip);
+    }
+
+    public function getWebCallbackUrl() 
+    {
+        return $this->getParameter('webcallbackurl');
+    } 
+
+    public function setWebCallbackUrl() 
+    {
+        $this->setParameter('webcallbackurl', $webCallbackUrl);
+    } 
+
+    public function getBankId() 
+    {
+        return $this->getParameter('bankid');
+    }
+
+    public function setBankId() 
+    {
+        $this->setParameter('bankid', $bankid);
+    }
+
+    public function getPeriod() 
+    {
+        return $this->getParameter('period');
+    }
+
+    public function setPeriod($period) 
+    {
+        $this->setParameter('period', $period);
+    }
+
+    public function getMemo() 
+    {
+        return $this->getParameter('memo');
+    }
+
+    public function setMemo() 
+    {
+        $this->setParameter('memo', $memo);
+    }
+
+    public function getUserNo() 
+    {
+        return $this->getParameter('userno');
+    }
+
+    public function setUserNo() 
+    {
+        $this->setParameter('userno', $userNo);
+    }
+
+    public function getCardName() 
+    {
+        return $this->getParameter('card_name');
+    }
+
+    public function setCardName($cardName) 
+    {
+        $this->setParameter('card_name', $cardName);
+    }
+
+    public function getBankCardNum() 
+    {
+        return $this->getParameter('ip');
+    }
+
+    public function setBankCardNum($bankCardNum) 
+    {
+        $this->setParameter('bank_card_num', $bankCardNum);
+    }
+
+    public function getMobilePhone() 
+    {
+        return $this->getParameter('ip');
+    }
+
+    public function setMobilePhone($mobilePhone) 
+    {
+        $this->setParameter('mobile_phone', $mobilePhone);
+    }
+
+    public function getOrderExpdate() 
+    {
+        return $this->getParameter('order_expdate');
+    }
+
+    public function setOrderExpdate($orderExpdate) 
+    {
+        $this->setParameter('order_expdate', $orderExpdate);
+    }
+
+    /**
+     * Send the request with specified data
+     *
+     * @param  mixed $data The data to send
+     *
+     * @return ResponseInterface
+     */
     public function sendData($data)
     {
-        return $this->response = new YeepayPurchaseResponse($this, $data);
-    }
+        $request      = $this->httpClient->post($this->endpoint)->setBody($data);
+        $response     = $request->send()->getBody();
+        $responseData = json_decode($response);
 
-    public function getOrderSerialNumber()
-    {
-        return $this->getParameter('order_serial_number');
+        return $this->response = new CreateOrderResponse($this, $responseData);
     }
-
-    public function setOrderSerialNumber($value)
-    {
-        return $this->setParameter('order_serial_number', $value);
-    }
-
-    public function getSubject()
-    {
-        return $this->getParameter('subject');
-    }
-
-    public function setSubject($value)
-    {
-        return $this->setParameter('subject', $value);
-    }
-
-    public function getTotalFee()
-    {
-        return $this->getParameter('total_fee');
-    }
-
-    public function setTotalFee($value)
-    {
-        return $this->setParameter('total_fee', $value);
-    }
-
-    public function getReturnUrl()
-    {
-        return $this->getParameter('return_url');
-    }
-
-    public function setReturnUrl($value)
-    {
-        return $this->setParameter('return_url', $value);
-    }
-
-    public function getNotifyUrl()
-    {
-        return $this->getParameter('notify_url');
-    }
-
-    public function setNotifyUrl($value)
-    {
-        return $this->setParameter('notify_url', $value);
-    }
-
-    public function getSignType()
-    {
-        return $this->sign_type;
-    }
-
-    public function setSignType($value)
-    {
-        $this->sign_type = $value;
-        return $this;
-    }
-
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    public function setKey($value)
-    {
-        $this->key = $value;
-        return $this;
-    }
-    
+        
     public function getEndpoint()
     {
         return $this->endpoint;

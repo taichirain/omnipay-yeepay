@@ -3,7 +3,7 @@
 namespace Omnipay\Yeepay;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Yeepay\Requests\YeepayCompletePurchaseRequest;
+use Omnipay\Yeepay\Requests\CompletePurchaseRequest;
 
 abstract class BaseAbstractGateway extends AbstractGateway
 {
@@ -13,7 +13,7 @@ abstract class BaseAbstractGateway extends AbstractGateway
      */
     public function getCustomerNumber()
     {
-        return $this->getParameter('customer_number');
+        return $this->getParameter('customernumber');
     }
 
     /**
@@ -21,50 +21,49 @@ abstract class BaseAbstractGateway extends AbstractGateway
      */
     public function setCustomerNumber($customerNumber)
     {
-        $this->setParameter('customer_number', $customerNumber);
+        $this->setParameter('customernumber', $customerNumber);
     }
 
 
     /**
      * @return mixed
      */
-    public function getCustomerKey()
+    public function getKeyValue()
     {
-        return $this->getParameter('customer_key');
+        return $this->getParameter('keyValue');
     }
 
 
     /**
-     * @param mixed $customerKey
+     * @param mixed $keyValue
      */
-    public function setCustomerKey($customerKey)
+    public function setKeyValue($keyValue)
     {
-        $this->setParameter('customer_key', $customerKey);
+        $this->setParameter('keyValue', $keyValue);
     }
 
     /**
      * @return mixed
      */
-    public function getAesCustomerKey()
+    public function getKeyAesValue()
     {
-        return $this->getParameter('aes_customer_key');
+        return $this->getParameter('keyAesValue');
     }
 
     /**
-     * @param mixed $aesCustomerKey
+     * @param mixed $keyAesValue
      */
-    public function setAesCustomerKey($aesCustomerKey)
+    public function setKeyAesValue($keyAesValue)
     {
-        $this->setParameter('aes_customer_key', $aesCustomerKey);
+        $this->setParameter('keyAesValue', $keyAesValue);
     }
-
 
     /**
      * @return mixed
      */
     public function getPayProductType()
     {
-        return $this->getParameter('pay_product_type');
+        return $this->getParameter('payproducttype');
     }
 
     /**
@@ -72,7 +71,7 @@ abstract class BaseAbstractGateway extends AbstractGateway
      */
     public function setPayProductType($payProductType)
     {
-        $this->setParameter('pay_product_type', $payProductType);
+        $this->setParameter('payproducttype', $payProductType);
     }
 
 
@@ -81,7 +80,7 @@ abstract class BaseAbstractGateway extends AbstractGateway
      */
     public function getProductName()
     {
-        return $this->getParameter('product_name');
+        return $this->getParameter('productname');
     }
 
     /**
@@ -89,26 +88,24 @@ abstract class BaseAbstractGateway extends AbstractGateway
      */
     public function setProductName($productName)
     {
-        $this->setParameter('product_name', $productName);
+        $this->setParameter('productname', $productName);
     }
-
 
     /**
      * @return mixed
      */
-    public function getRequestid()
+    public function getRequestId()
     {
         return $this->getParameter('requestid');
     }
 
     /**
-     * @param mixed $requestid
+     * @param mixed $requestId
      */
-    public function setRequestid($requestid)
+    public function setRequestId($requestId)
     {
-        $this->setParameter('requestid', $requestid);
+        $this->setParameter('requestid', $requestId);
     }
-
 
     /**
      * @return mixed
@@ -125,7 +122,6 @@ abstract class BaseAbstractGateway extends AbstractGateway
     {
         $this->setParameter('platform', $platform);
     }
-
 
     /**
      * @return mixed
@@ -151,9 +147,8 @@ abstract class BaseAbstractGateway extends AbstractGateway
         return $this->getParameter('ip');
     }
 
-
     /**
-     * @param mixed $spbill_create_ip
+     * @param mixed $ip
      */
     public function setIp($ip)
     {

@@ -10,55 +10,55 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 abstract class BaseAbstractRequest extends AbstractRequest
 {
-    /**
+
+        /**
      * @return mixed
      */
     public function getCustomerNumber()
     {
-        return $this->getParameter('customer_number');
+        return $this->getParameter('customernumber');
     }
-
 
     /**
      * @param mixed $customerNumber
      */
     public function setCustomerNumber($customerNumber)
     {
-        $this->setParameter('customer_number', $customerNumber);
+        $this->setParameter('customernumber', $customerNumber);
     }
 
 
     /**
      * @return mixed
      */
-    public function getCustomerKey()
+    public function getKeyValue()
     {
-        return $this->getParameter('customer_key');
+        return $this->getParameter('keyValue');
     }
 
 
     /**
-     * @param mixed $customerKey
+     * @param mixed $keyValue
      */
-    public function setCustomerKey($customerKey)
+    public function setKeyValue($keyValue)
     {
-        $this->setParameter('customer_key', $customerKey);
+        $this->setParameter('keyValue', $keyValue);
     }
 
     /**
      * @return mixed
      */
-    public function getAesCustomerKey()
+    public function getKeyAesValue()
     {
-        return $this->getParameter('aes_customer_key');
+        return $this->getParameter('keyAesValue');
     }
 
     /**
-     * @param mixed $aesCustomerKey
+     * @param mixed $keyAesValue
      */
-    public function setAesCustomerKey($aesCustomerKey)
+    public function setKeyAesValue($keyAesValue)
     {
-        $this->setParameter('aes_customer_key', $aesCustomerKey);
+        $this->setParameter('keyAesValue', $keyAesValue);
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class BaseAbstractRequest extends AbstractRequest
      */
     public function getPayProductType()
     {
-        return $this->getParameter('pay_product_type');
+        return $this->getParameter('payproducttype');
     }
 
     /**
@@ -74,15 +74,16 @@ abstract class BaseAbstractRequest extends AbstractRequest
      */
     public function setPayProductType($payProductType)
     {
-        $this->setParameter('pay_product_type', $payProductType);
+        $this->setParameter('payproducttype', $payProductType);
     }
+
 
     /**
      * @return mixed
      */
     public function getProductName()
     {
-        return $this->getParameter('product_name');
+        return $this->getParameter('productname');
     }
 
     /**
@@ -90,23 +91,23 @@ abstract class BaseAbstractRequest extends AbstractRequest
      */
     public function setProductName($productName)
     {
-        $this->setParameter('product_name', $productName);
+        $this->setParameter('productname', $productName);
     }
 
     /**
      * @return mixed
      */
-    public function getRequestid()
+    public function getRequestId()
     {
         return $this->getParameter('requestid');
     }
 
     /**
-     * @param mixed $requestid
+     * @param mixed $requestId
      */
-    public function setRequestid($requestid)
+    public function setRequestId($requestId)
     {
-        $this->setParameter('requestid', $requestid);
+        $this->setParameter('requestid', $requestId);
     }
 
     /**
@@ -124,7 +125,6 @@ abstract class BaseAbstractRequest extends AbstractRequest
     {
         $this->setParameter('platform', $platform);
     }
-
 
     /**
      * @return mixed
@@ -150,20 +150,107 @@ abstract class BaseAbstractRequest extends AbstractRequest
         return $this->getParameter('ip');
     }
 
-
     /**
-     * @param mixed $spbill_create_ip
+     * @param mixed $ip
      */
     public function setIp($ip)
     {
         $this->setParameter('ip', $ip);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCallBackUrl()
+    {
+        return $this->getParameter('callbackurl');
+    }
 
+    /**
+     * @param mixed $callBackUrl
+     */
+    public function setCallBackurl($callBackUrl)
+    {
+        $this->setParameter('callbackurl', $callBackUrl);
+    }
 
+    /**
+      * @取得hmac签名
+      * @$dataArray 明文数组或者字符串
+      * @$key 密钥
+      * @return string
+      *
+     */
+    function getHmac(array $dataArray, $key) {
+        
+        if ( !isViaArray($dataArray) ) {
+        
+            return null;    
+        }
+        
+        if ( !$key || empty($key) ) {
+            
+            return null;
+        }
+        
+        if ( is_array($dataArray) ) {
+        
+            $data = implode("", $dataArray);
+        } else {
+        
+            $data = strval($dataArray); 
+        }
+        
 
+        $b = 64; // byte length for md5
+        if (strlen($key) > $b) {
+            
+            $key = pack("H*",md5($key));
+        }
+        
+        $key = str_pad($key, $b, chr(0x00));
+        $ipad = str_pad('', $b, chr(0x36));
+        $opad = str_pad('', $b, chr(0x5c));
+        $k_ipad = $key ^ $ipad ;
+        $k_opad = $key ^ $opad;
 
+        return md5($k_opad . pack("H*",md5($k_ipad . $data)));
+    }
 
+    /**
+      * @取得aes加密
+      * @$dataArray 明文字符串
+      * @$key 密钥
+      * @return string
+      *
+     */
+    function getAes($data, $aesKey) {
+
+        $aes = new CryptAES();
+        $aes->set_key($aesKey);
+        $aes->require_pkcs5();
+        $encrypted = strtoupper($aes->encrypt($data));
+        
+        return $encrypted;
+
+    }
+
+    /**
+      * @取得aes解密
+      * @$dataArray 密文字符串
+      * @$key 密钥
+      * @return string
+      *
+     */
+    function getDeAes($data, $aesKey) {
+
+        $aes = new CryptAES();
+        $aes->set_key($aesKey);
+        $aes->require_pkcs5();
+        $text = $aes->decrypt($data);
+        
+        return $text;
+    }
 
 
 
