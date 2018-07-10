@@ -1,0 +1,36 @@
+{
+  "name": "taichirain/omnipay-yeepay",
+  "type": "library",
+  "description": "Yeepay gateway for Omnipay payment processing library",
+  "keywords": [
+    "yeepay",
+    "gateway",
+    "merchant",
+    "omnipay",
+    "pay",
+    "payment",
+    "purchase"
+  ],
+  "homepage": "https://github.com/taichirain/omnipay-yeepay",
+  "license": "MIT",
+  "authors": [
+      {
+        "name": "HongjunChen",
+        "email": "taichirain@gmail.com"
+      }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Omnipay\\Yeepay\\": "src/"
+    },
+    "files": [
+      "src/Common/helpers.php"
+    ]
+  },
+  "require": {
+    "omnipay/common": "~2.0"
+  },
+  "require-dev": {
+    "omnipay/tests": "~2.0"
+  }
+}
