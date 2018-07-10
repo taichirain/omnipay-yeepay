@@ -2,18 +2,22 @@
 
 namespace Omnipay\Yeepay\Responses;
 
-use Omnipay\Yeepay\Requests\CreateOrderRequest;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Message\RequestInterface;
 
-class CreateOrderResponse extends AbstractResponse implements RedirectResponseInterface
+class CreateOrderResponse extends BaseAbstractResponse
 {
-
     /**
      * @var YeepayPurchaseRequest
      */
     protected $request;
 
+    public function __construct(RequestInterface $request, $data)
+    {
+        $this->request = $request;
+        parse_str($data, $this->data);
+    }
 
     public function isRedirect()
     {
