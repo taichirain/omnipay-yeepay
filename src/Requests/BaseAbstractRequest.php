@@ -10,10 +10,9 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 abstract class BaseAbstractRequest extends AbstractRequest
 {
-
-        /**
-     * @return mixed
-     */
+   /**
+    * @return mixed
+    */
     public function getCustomerNumber()
     {
         return $this->getParameter('customernumber');
@@ -173,60 +172,5 @@ abstract class BaseAbstractRequest extends AbstractRequest
     {
         $this->setParameter('callbackurl', $callBackUrl);
     }
-
     
-    /**
-      * @取得aes加密
-      * @$dataArray 明文字符串
-      * @$key 密钥
-      * @return string
-      *
-     */
-    function getAes($data, $aesKey) {
-
-        $aes = new CryptAES();
-        $aes->set_key($aesKey);
-        $aes->require_pkcs5();
-        $encrypted = strtoupper($aes->encrypt($data));
-        
-        return $encrypted;
-
-    }
-
-    /**
-      * @取得aes解密
-      * @$dataArray 密文字符串
-      * @$key 密钥
-      * @return string
-      *
-     */
-    function getDeAes($data, $aesKey) {
-
-        $aes = new CryptAES();
-        $aes->set_key($aesKey);
-        $aes->require_pkcs5();
-        $text = $aes->decrypt($data);
-        
-        return $text;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
