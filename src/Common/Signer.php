@@ -26,9 +26,35 @@ class Signer
       * @return array 转换后的数组
       *
       */
-    private function cn_url_encode($array) {
-        arrayRecursive($array, "urlencode", true);
+    private static function cn_url_encode($array) {
+        self::arrayRecursive($array, "urlencode", true);
         return $array;
+    }
+    
+    /**
+      * @使用特定function对数组中所有元素做处理
+      * @&$array 要处理的字符串
+      * @$function 要执行的函数
+      * @$apply_to_keys_also 是否也应用到key上
+      *
+      */
+    private static function arrayRecursive(&$array, $function, $apply_to_keys_also = false)
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                arrayRecursive($array[$key], $function, $apply_to_keys_also);
+            } else {
+                $array[$key] = $function($value);
+            }
+
+            if ($apply_to_keys_also && is_string($key)) {
+                $new_key = $function($key);
+                if ($new_key != $key) {
+                    $array[$new_key] = $array[$key];
+                    unset($array[$key]);
+                }
+            }
+        }
     }
 
     /**
@@ -49,9 +75,9 @@ class Signer
             
             return null;
         }
-
-        foreach ($hmacdata as &$v) {
-            $v = $v ? $v : '';
+ 
+        foreach ($hmacdata as $k=>$v) {
+            $hmacdata[$k] = $v ? $v : '';
         }
         
         if ( is_array($hmacdata) ) {
@@ -77,50 +103,39 @@ class Signer
         return md5($k_opad . pack("H*",md5($k_ipad . $data)));
     }
 
-    public static function signAes()
-    {
-        /**
-          * @取得aes加密
-          * @$dataArray 明文字符串
-          * @$key 密钥
-          * @return string
-          *
-         */
-        function getAes($data, $aesKey) {
+    /**
+      * @取得aes加密
+      * @$dataArray 明文字符串
+      * @$key 密钥
+      * @return string
+      *
+     */
+    public static function getAes($data, $aesKey) {
+        $aes = new CryptAES();
+        $aes->set_key($aesKey);
+        $aes->require_pkcs5();
+        
+        $encrypted = strtoupper($aes->encrypt($data));
 
-            foreach ($data as &$v) {
-                $v = $v ? $v : '';
-            }
+        return $encrypted;
 
-            $aes = new CryptAES();
-            $aes->set_key($aesKey);
-            $aes->require_pkcs5();
-            $encrypted = strtoupper($aes->encrypt($data));
+    }
 
-            return $encrypted;
+    /**
+      * @取得aes解密
+      * @$dataArray 密文字符串
+      * @$key 密钥
+      * @return string
+      *
+     */
+    public static function getDeAes($data, $aesKey) {
 
-        }
+        $aes = new CryptAES();
+        $aes->set_key($aesKey);
+        $aes->require_pkcs5();
+        $text = $aes->decrypt($data);
 
-        /**
-          * @取得aes解密
-          * @$dataArray 密文字符串
-          * @$key 密钥
-          * @return string
-          *
-         */
-        function getDeAes($data, $aesKey) {
-
-            foreach ($data as &$v) {
-                $v = $v ? $v : '';
-            }
-
-            $aes = new CryptAES();
-            $aes->set_key($aesKey);
-            $aes->require_pkcs5();
-            $text = $aes->decrypt($data);
-
-            return $text;
-        }
+        return $text;
     }
 
 }

@@ -24,10 +24,30 @@ class CreateOrderResponse extends BaseAbstractResponse
         return true;
     }
 
-
     public function getRedirectUrl()
     {
         return $this->request->getEndpoint() . 'unifiedorder/?' . http_build_query($this->getRedirectData());
+    }
+
+    public function getTransactionReference()
+    {
+        if ($this->isSuccessful()) {
+            $data = [
+                'customernumber' => $this->request->getCustomerNumber(),
+                'requestid' => $this->request->getRequestId(),
+                'code'  => $this->getCode(),
+                'externalid'   => $this->getExternalId(),
+                'amount'   => $this->getAmount(),
+                'payurl' => $this->getPayUrl(),
+                'hmac' => $this->getHmac(),
+            ];
+
+            $data['sign'] = Helper::sign($data, $this->request->getApiKey());
+        } else {
+            $data = null;
+        }
+
+        return $data;
     }
 
     /**

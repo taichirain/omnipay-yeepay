@@ -26,7 +26,6 @@ abstract class BaseAbstractRequest extends AbstractRequest
         $this->setParameter('customernumber', $customerNumber);
     }
 
-
     /**
      * @return mixed
      */

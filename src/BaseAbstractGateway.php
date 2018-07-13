@@ -156,6 +156,22 @@ abstract class BaseAbstractGateway extends AbstractGateway
     }
 
     /**
+     * @return mixed
+     */
+    public function getCallBackUrl()
+    {
+        return $this->getParameter('callbackurl');
+    }
+
+    /**
+     * @param mixed $callBackUrl
+     */
+    public function setCallBackurl($callBackUrl)
+    {
+        $this->setParameter('callbackurl', $callBackUrl);
+    }
+
+    /**
      * @param array $parameters
      *
      * @return \Omnipay\WechatPay\Message\CreateOrderRequest
