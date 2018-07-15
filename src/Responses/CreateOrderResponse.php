@@ -2,6 +2,7 @@
 
 namespace Omnipay\Yeepay\Responses;
 
+use Omnipay\Yeepay\Helper;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
@@ -16,7 +17,8 @@ class CreateOrderResponse extends BaseAbstractResponse
     public function __construct(RequestInterface $request, $data)
     {
         $this->request = $request;
-        parse_str($data, $this->data);
+        // parse_str($data, $this->data);
+        $this->data = json_decode($data,true);
     }
 
     public function isRedirect()
@@ -33,18 +35,17 @@ class CreateOrderResponse extends BaseAbstractResponse
     {
         if ($this->isSuccessful()) {
             $data = [
-                'customernumber' => $this->request->getCustomerNumber(),
+                // 'customernumber' => $this->request->getCustomerNumber(),
                 'requestid' => $this->request->getRequestId(),
-                'code'  => $this->getCode(),
+                'return_code'  => $this->getCode(),
                 'externalid'   => $this->getExternalId(),
                 'amount'   => $this->getAmount(),
                 'payurl' => $this->getPayUrl(),
                 'hmac' => $this->getHmac(),
             ];
-
-            $data['sign'] = Helper::sign($data, $this->request->getApiKey());
         } else {
-            $data = null;
+            $data['return_code'] = $this->getCode();
+            $data['return_message'] = $this->getMsg();
         }
 
         return $data;

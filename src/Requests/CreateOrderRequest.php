@@ -343,7 +343,6 @@ class CreateOrderRequest extends BaseAbstractRequest
         if($jsonToArrayResponse) {
             $cryptAes = new CryptAES($this->getKeyAesValue());
             $unencrypted = $cryptAes->decrypt_openssl($jsonToArrayResponse['data']);
-            dd($unencrypted);
         }
 
         return $this->createResponse($unencrypted, $httpResponse->getStatusCode());

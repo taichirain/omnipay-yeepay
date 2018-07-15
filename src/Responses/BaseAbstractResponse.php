@@ -26,8 +26,7 @@ abstract class BaseAbstractResponse extends AbstractResponse
     public function isSuccessful()
     {
         $data = $this->getData();
-
-        return isset($data['code']) && $data['code'] == '1';
+        return isset($data['code']) && $data['code'] == '1' ? 1 : 0;
     }
 
     /**
@@ -39,6 +38,17 @@ abstract class BaseAbstractResponse extends AbstractResponse
     {
         $data = $this->data;
         return isset($data['code']) ? $data['code'] : '';
+    }
+
+    /**
+     * pay result code
+     *
+     * @return boolean
+     */
+    public function getMsg()
+    {
+        $data = $this->data;
+        return isset($data['msg']) ? $data['msg'] : '';
     }
 
     /**
