@@ -265,6 +265,16 @@ class CreateOrderRequest extends BaseAbstractRequest
         $this->setParameter('appstatement', $appStatement);
     }
 
+    public function getDirectcode() 
+    {
+        return $this->getParameter('directcode');
+    }
+
+    public function setDirectcode($directcode) 
+    {
+        $this->setParameter('directcode', $directcode);
+    }
+
     /**
      * Get HTTP Method.
      *
