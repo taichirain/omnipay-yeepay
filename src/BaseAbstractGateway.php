@@ -2,6 +2,9 @@
 
 namespace Omnipay\Yeepay;
 
+use Omnipay\Yeepay\Helper;
+use Omnipay\Yeepay\Common\Signer;
+use Omnipay\Yeepay\Common\CryptAES;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Yeepay\Requests\CompletePurchaseRequest;
 
@@ -180,5 +183,20 @@ abstract class BaseAbstractGateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\Yeepay\Requests\CreateOrderRequest', $parameters);
     }
-    
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Omnipay\WechatPay\Message\CreateOrderRequest
+     */
+    public function getWebCallBackReference($data = '')
+    {
+        if(!$data) {
+            return false;
+        }
+        $cryptAes = new CryptAES($this->getKeyAesValue());
+        $unencrypted = $cryptAes->decrypt_openssl($data); 
+
+        return json_decode($unencrypted,true);
+    }
 }
