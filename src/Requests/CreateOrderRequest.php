@@ -68,6 +68,7 @@ class CreateOrderRequest extends BaseAbstractRequest
             'platform'       => $this->getPlatform(),
             'appname'       => $this->getAppName(),
             'appstatement'   => $this->getAppStatement(),
+            'directcode'     => $this->getDirectcode()
         ];
 
         $data = array_merge($hmacdata, $extra_data);
