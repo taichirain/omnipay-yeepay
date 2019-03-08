@@ -189,6 +189,16 @@ abstract class BaseAbstractGateway extends AbstractGateway
      *
      * @return \Omnipay\WechatPay\Message\CreateOrderRequest
      */
+    public function transfer($parameters = array())
+    {
+        return $this->createRequest('\Omnipay\Yeepay\Requests\TransferRequest', $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Omnipay\WechatPay\Message\CreateOrderRequest
+     */
     public function getWebCallBackReference($data = '')
     {
         if(!$data) {
