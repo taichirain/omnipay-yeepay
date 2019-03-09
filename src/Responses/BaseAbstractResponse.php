@@ -63,6 +63,17 @@ abstract class BaseAbstractResponse extends AbstractResponse
     }
 
     /**
+     * out order id
+     *
+     * @return boolean
+     */
+    public function getOrderId()
+    {
+        $data = $this->data;
+        return isset($data['orderId']) ? $data['orderId'] : '';
+    }
+
+    /**
      * order amount
      *
      * @return boolean
