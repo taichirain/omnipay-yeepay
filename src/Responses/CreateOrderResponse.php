@@ -39,6 +39,7 @@ class CreateOrderResponse extends BaseAbstractResponse
                 'requestid' => $this->request->getRequestId(),
                 'return_code'  => $this->getCode(),
                 'externalid'   => $this->getExternalId(),
+                'orderid'   => $this->getOrderId(),
                 'amount'   => $this->getAmount(),
                 'payurl' => $this->getPayUrl(),
                 'hmac' => $this->getHmac(),
